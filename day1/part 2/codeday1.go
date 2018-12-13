@@ -6,50 +6,58 @@ import (
 	"log"
 	"os"
 	"strconv"
-	"time"
 )
 
 func main() {
-	check := false
-	readval := []int{}
+	fmt.Println("Gonna start")
+	fileval := getFile()
+	fmt.Println("Got the goods")
+	findMatch(fileval)
+}
+
+func getFile() []int {
 	val := []int{}
-	freq := 0
-	n := 0
 	file, err := os.Open("input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
 	read := bufio.NewReader(file)
-
 	for {
 		freqMod, _, err := read.ReadLine()
 		if err != nil {
-			if err.Error() == "EOF" {
-				n = 0
-				fmt.Println("EOF")
-				time.Sleep(500 * time.Millisecond)
-				n = 0
-			}
-			continue
-		}
-
-		// fmt.Println(freq)
-		for i, _ := range val {
-			if freq == val[i] {
-				check = true
-				fmt.Println(freq)
-				return
-			}
-		}
-
-		l, _ := strconv.Atoi(string(freqMod))
-		readval = append(readval, l)
-		val = append(val, freq)
-		if check == true {
 			break
 		}
-		freq = freq + readval[n]
-		fmt.Println(freq)
-		n++
+		l, _ := strconv.Atoi(string(freqMod))
+		val = append(val, l)
 	}
+	return val
+}
+
+func findMatch(fileval []int) {
+	freq := 0
+	freqList := []int{}
+	i := 0
+	for {
+		if i == 0 {
+			freq = freq + fileval[i]
+			freqList = append(freqList, freq)
+		}
+		if i == len(fileval)-1 {
+			fmt.Println("EOF")
+			i = 0
+		}
+		fmt.Println(i)
+		if i != (len(fileval)-1) || i != 0 {
+			freq = freq + fileval[i]
+			for _, freqlistval := range freqList {
+				if freq == freqlistval {
+					fmt.Println(freq)
+					return
+				}
+			}
+			freqList = append(freqList, freq)
+		}
+		i++
+	}
+	log.Println(freq)
 }
