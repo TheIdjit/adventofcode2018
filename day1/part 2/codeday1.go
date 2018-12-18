@@ -51,7 +51,7 @@ func findMatch(fileval []int) {
 			freq = freq + fileval[i]
 			for _, freqlistval := range freqList {
 				if freq == freqlistval {
-					fmt.Println(freq)
+					log.Println(freq)
 					return
 				}
 			}
@@ -59,5 +59,4 @@ func findMatch(fileval []int) {
 		}
 		i++
 	}
-	log.Println(freq)
 }
