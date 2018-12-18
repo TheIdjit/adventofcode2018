@@ -11,13 +11,14 @@ import (
 )
 
 type vibre struct {
-	ID        int
-	LocationX int
-	LocationY int
-	sizeX     int
-	sizeY     int
-	endX      int
-	endY      int
+	ID         int
+	LocationX  int
+	LocationY  int
+	sizeX      int
+	sizeY      int
+	endX       int
+	endY       int
+	HasOverlap bool
 }
 
 func main() {
@@ -127,6 +128,19 @@ func overlap(v []*vibre, x [][]int) {
 					count++
 				}
 			}
+		}
+	}
+	for _, val := range v {
+		for i := val.LocationX; i < val.endX; i++ {
+			for j := val.LocationY; j < val.endY; j++ {
+				if x[i][j] > 1 {
+					val.HasOverlap = true
+				}
+			}
+
+		}
+		if val.HasOverlap != true {
+			fmt.Println(val.ID)
 		}
 	}
 	fmt.Println(count)
